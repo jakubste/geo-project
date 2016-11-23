@@ -42,13 +42,7 @@ class Applet(object):
                 s = p0.add_vector(v.divide(2))
 
                 circle = pyplot.Circle((s.x, s.y), v.divide(2).length, fill=False, color='g', clip_on=False)
-                fig, ax = pyplot.subplots()
-                ax.set_aspect('equal')
-                ax.add_artist(circle)
-                plot_points(self.points)
-                plot_points(hull, 'b-')
-                save_plot('circle/' + str(self.image_id).zfill(3))
-                self.image_id += 1
+                self.make_plot(circle, hull)
                 break
 
             if cosinus(p0, p1, v) > 0 and cosinus(v, p0, p1) > 0:
@@ -58,13 +52,7 @@ class Applet(object):
                 c = (x - y) * (w - abs(w) ** 2) / 2j / w.imag - x
 
                 circle = pyplot.Circle((-c.real, -c.imag), abs(c + x), fill=False, color='g', clip_on=False)
-                fig, ax = pyplot.subplots()
-                ax.set_aspect('equal')
-                ax.add_artist(circle)
-                plot_points(self.points)
-                plot_points(hull, 'b-')
-                save_plot('circle/' + str(self.image_id).zfill(3))
-                self.image_id += 1
+                self.make_plot(circle, hull)
                 break
 
             if cosinus(p0, p1, v) < 0:
@@ -75,6 +63,15 @@ class Applet(object):
                 other_points.remove(v)
                 other_points.append(p0)
                 p0 = v
+
+    def make_plot(self, circle, hull):
+        fig, ax = pyplot.subplots()
+        ax.set_aspect('equal')
+        ax.add_artist(circle)
+        plot_points(self.points)
+        plot_points(hull, 'b-')
+        save_plot('circle/' + str(self.image_id).zfill(3))
+        self.image_id += 1
 
 
 points = points_on_circle(15, 100)
