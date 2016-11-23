@@ -1,10 +1,8 @@
-from copy import copy
-
 from matplotlib import pyplot
 
-from geometry import cosinus, plot_points, save_plot, Vector, Point
+from geometry import cosinus, plot_points, save_plot, Point
 from hull import GrahamHull
-from points_generator import points_by_coors, points_in_circle, points_on_circle
+from points_generator import points_by_coors
 
 PLOT_AXIS = [-100, 150, -50, 150]
 
@@ -85,7 +83,7 @@ class SmallestRectangle(object):
         ]
 
         hull = self.hull + [self.hull[1]]
-        for j in xrange(i+1):
+        for j in xrange(i + 1):
             center = hull[i]
             t = center.vector(Point(0, 0))
             hull = [p.add_vector(t) for p in hull]

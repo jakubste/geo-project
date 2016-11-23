@@ -2,9 +2,9 @@ from copy import copy
 
 from matplotlib import pyplot
 
-from geometry import cosinus, plot_points, save_plot, Vector
+from geometry import cosinus, plot_points, save_plot
 from hull import GrahamHull
-from points_generator import points_by_coors, points_in_circle, points_on_circle
+from points_generator import points_on_circle
 
 
 class Applet(object):
@@ -57,7 +57,7 @@ class Applet(object):
                 w /= y - x
                 c = (x - y) * (w - abs(w) ** 2) / 2j / w.imag - x
 
-                circle = pyplot.Circle((-c.real, -c.imag), abs(c+x), fill=False, color='g', clip_on=False)
+                circle = pyplot.Circle((-c.real, -c.imag), abs(c + x), fill=False, color='g', clip_on=False)
                 fig, ax = pyplot.subplots()
                 ax.set_aspect('equal')
                 ax.add_artist(circle)

@@ -66,5 +66,3 @@ class GrahamHull(Hull):
         hull.append(self.root)
 
         return hull
-
-
