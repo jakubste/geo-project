@@ -34,12 +34,7 @@ class SmallestRectangle(object):
             cos = cosinus(next_point, center, Point(1, 0))
             hull = [p.rotate(cos) for p in hull]
 
-            fig, ax = pyplot.subplots()
-            ax.set_aspect('equal')
-            plot_points(hull, 'bo-')
-            pyplot.axis(PLOT_AXIS)
-            save_plot(mode + '/' + str(self.image_id).zfill(3))
-            self.image_id += 1
+            self.plot_stage(hull, mode)
 
             minx, maxx, maxy = 0, 0, 0
             for p in hull:
@@ -59,19 +54,7 @@ class SmallestRectangle(object):
                 coords = minx, maxx, maxy, i
                 color = 'go-'
 
-            fig, ax = pyplot.subplots()
-            ax.set_aspect('equal')
-            plot_points(hull, 'bo-')
-            plot_points([
-                Point(minx, maxy),
-                Point(minx, 0),
-                Point(maxx, 0),
-                Point(maxx, maxy),
-                Point(minx, maxy),
-            ], color)
-            pyplot.axis(PLOT_AXIS)
-            save_plot(mode + '/' + str(self.image_id).zfill(3))
-            self.image_id += 1
+            self.plot_stage_with_rectangle(color, hull, maxx, maxy, minx, mode)
 
         minx, maxx, maxy, i = coords
 
@@ -105,30 +88,54 @@ class SmallestRectangle(object):
         save_plot(mode + '/' + str(self.image_id).zfill(3))
         self.image_id += 1
 
+    def plot_stage_with_rectangle(self, color, hull, maxx, maxy, minx, mode):
+        fig, ax = pyplot.subplots()
+        ax.set_aspect('equal')
+        plot_points(hull, 'bo-')
+        plot_points([
+            Point(minx, maxy),
+            Point(minx, 0),
+            Point(maxx, 0),
+            Point(maxx, maxy),
+            Point(minx, maxy),
+        ], color)
+        pyplot.axis(PLOT_AXIS)
+        save_plot(mode + '/' + str(self.image_id).zfill(3))
+        self.image_id += 1
 
-points = points_by_coors(3, 50, 50)
+    def plot_stage(self, hull, mode):
+        fig, ax = pyplot.subplots()
+        ax.set_aspect('equal')
+        plot_points(hull, 'bo-')
+        pyplot.axis(PLOT_AXIS)
+        save_plot(mode + '/' + str(self.image_id).zfill(3))
+        self.image_id += 1
 
-# Example used on presentation:
-# points = [
-#     Point(0,0),
-#     Point(0,120),
-#     Point(45,-10),
-#     Point(10, 50),
-#     Point(-2, 50),
-#     Point(10, 60),
-#     Point(30, 40),
-#     Point(20, 30),
-#     Point(10, 20),
-#     Point(0, 10),
-#     Point(40, -5),
-# ]
 
-fig, ax = pyplot.subplots()
-ax.set_aspect('equal')
-plot_points(points, 'bo')
-hull = GrahamHull().run(points)
-plot_points(hull, 'r-')
-pyplot.axis(PLOT_AXIS)
-save_plot('000')
-SmallestRectangle(hull, points).run('area')
-SmallestRectangle(hull, points).run('perimeter')
+if __name__ == "__main__":
+    points = points_by_coors(3, 50, 50)
+
+    # Example used on presentation:
+    # points = [
+    #     Point(0,0),
+    #     Point(0,120),
+    #     Point(45,-10),
+    #     Point(10, 50),
+    #     Point(-2, 50),
+    #     Point(10, 60),
+    #     Point(30, 40),
+    #     Point(20, 30),
+    #     Point(10, 20),
+    #     Point(0, 10),
+    #     Point(40, -5),
+    # ]
+
+    fig, ax = pyplot.subplots()
+    ax.set_aspect('equal')
+    plot_points(points, 'bo')
+    hull = GrahamHull().run(points)
+    plot_points(hull, 'r-')
+    pyplot.axis(PLOT_AXIS)
+    save_plot('000')
+    SmallestRectangle(hull, points).run('area')
+    SmallestRectangle(hull, points).run('perimeter')

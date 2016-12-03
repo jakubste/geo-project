@@ -2,7 +2,6 @@
 from math import sqrt
 
 from matplotlib import pyplot
-from numpy.ma import arccos
 
 
 class Point(object):

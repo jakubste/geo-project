@@ -28,21 +28,15 @@ class Applet(object):
             v = other_points[0]
             cos = cosinus(p0, v, p1)
 
-            fig, ax = pyplot.subplots()
-            ax.set_aspect('equal')
-            plot_points(hull, 'ro-')
-            plot_points([p0, p1], 'g-')
-            plot_points([p0, v], 'b-')
-            plot_points([p1, v], 'b-')
-            save_plot('circle/' + str(self.image_id).zfill(3))
-            self.image_id += 1
+            self.plot_stage(hull, p0, p1, v)
 
             if cos < 0:
                 v = p0.vector(p1)
                 s = p0.add_vector(v.divide(2))
 
-                circle = pyplot.Circle((s.x, s.y), v.divide(2).length, fill=False, color='g', clip_on=False)
-                self.make_plot(circle, hull)
+                xy = (s.x, s.y)
+                radius = v.divide(2).length
+                self.plot_circle(hull, radius, xy)
                 break
 
             if cosinus(p0, p1, v) > 0 and cosinus(v, p0, p1) > 0:
@@ -51,8 +45,9 @@ class Applet(object):
                 w /= y - x
                 c = (x - y) * (w - abs(w) ** 2) / 2j / w.imag - x
 
-                circle = pyplot.Circle((-c.real, -c.imag), abs(c + x), fill=False, color='g', clip_on=False)
-                self.make_plot(circle, hull)
+                xy = (-c.real, -c.imag)
+                radius = abs(c + x)
+                self.plot_circle(hull, radius, xy)
                 break
 
             if cosinus(p0, p1, v) < 0:
@@ -64,6 +59,20 @@ class Applet(object):
                 other_points.append(p0)
                 p0 = v
 
+    def plot_stage(self, hull, p0, p1, v):
+        fig, ax = pyplot.subplots()
+        ax.set_aspect('equal')
+        plot_points(hull, 'ro-')
+        plot_points([p0, p1], 'g-')
+        plot_points([p0, v], 'b-')
+        plot_points([p1, v], 'b-')
+        save_plot('circle/' + str(self.image_id).zfill(3))
+        self.image_id += 1
+
+    def plot_circle(self, hull, radius, xy):
+        circle = pyplot.Circle(xy, radius, fill=False, color='g', clip_on=False)
+        self.make_plot(circle, hull)
+
     def make_plot(self, circle, hull):
         fig, ax = pyplot.subplots()
         ax.set_aspect('equal')
@@ -73,12 +82,12 @@ class Applet(object):
         save_plot('circle/' + str(self.image_id).zfill(3))
         self.image_id += 1
 
-
-points = points_on_circle(15, 100)
-fig, ax = pyplot.subplots()
-ax.set_aspect('equal')
-plot_points(points, 'bo')
-hull = GrahamHull().run(points)
-plot_points(hull, 'r-')
-save_plot('circle/' + str(0))
-Applet(hull, points).run()
+if __name__ == "__main__":
+    points = points_on_circle(15, 100)
+    fig, ax = pyplot.subplots()
+    ax.set_aspect('equal')
+    plot_points(points, 'bo')
+    hull = GrahamHull().run(points)
+    plot_points(hull, 'r-')
+    save_plot('circle/' + str(0))
+    Applet(hull, points).run()
